@@ -10,4 +10,23 @@ public class HeroTest {
      assertEquals(true, myHero instanceof Hero);
    }
 
+   @Test
+     public void Hero_instantiatesWithDescription_String() {
+       Hero myHero = new Hero("HumanTorch", 39, "Ignitefire", "Girls");
+       assertEquals("HumanTorch", 39, "Ignitefire", "Girls", myHero.getName());
+     }
+
+     @Test
+       public void Hero_instantiatesWithDescription_String() {
+         Hero myHero = new Hero("HumanTorch", 39, "Ignitefire", "Girls");
+         assertEquals("HumanTorch", 39, "Ignitefire", "Girls", myHero.getAge());
+       }
+
+       @Test
+         public void Hero_instantiatesWithDescription_String() {
+           Hero myHero = new Hero("HumanTorch", 39, "Ignitefire", "Girls");
+           assertEquals("HumanTorch", 39, "Ignitefire", "Girls", myHero.getWeakness());
+         }
+
+
 }
