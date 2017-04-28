@@ -10,6 +10,16 @@ public class App {
     staticFileLocation("/public");
     String layout = "templates/layout.vtl";
 
+    ProcessBuilder process = new ProcessBuilder();
+   Integer port;
+   if (process.environment().get("PORT") != null) {
+       port = Integer.parseInt(process.environment().get("PORT"));
+   } else {
+       port = 4567;
+   }
+
+  setPort(port);
+
  // creating a root route in App.java file that will render our home page
  // displaying custom methods
     get("/", (request, response) -> {
@@ -42,6 +52,49 @@ public class App {
     }, new VelocityTemplateEngine());
 
 
+// route responsible for rendering the template with the new-team form
+    get("/teams/new", (request, response) -> {
+  Map<String, Object> model = new HashMap<String, Object>();
+  model.put("template", "templates/team-form.vtl");
+  return new ModelAndView(model, layout);
+}, new VelocityTemplateEngine());
+
+// route to display all teams
+get("/teams", (request, response) -> {
+  Map<String, Object> model = new HashMap<String, Object>();
+  model.put("teams", Team.all());
+  model.put("template", "templates/teams.vtl");
+  return new ModelAndView(model, layout);
+}, new VelocityTemplateEngine());
+
+ // routing and a basic template setup
+get("/teams/:id", (request, response) -> {
+  Map<String, Object> model = new HashMap<String, Object>();
+  Team team = Team.find(Integer.parseInt(request.params(":id")));
+  model.put("team", team);
+  model.put("template", "templates/team.vtl");
+  return new ModelAndView(model, layout);
+}, new VelocityTemplateEngine());
+
+ // Because we are now exclusively creating new Hero objects after selecting their corresponding Team this route will replace our previous /heroes/new route
+get("teams/:id/heroes/new", (request, response) -> {
+  Map<String, Object> model = new HashMap<String, Object>();
+  Category category = Category.find(Integer.parseInt(request.params(":id")));
+  model.put("team", team);
+  model.put("template", "templates/team-heroes-form.vtl");
+  return new ModelAndView(model, layout);
+}, new VelocityTemplateEngine());
+
+// a route to process new-team form submission
+post("/teams", (request, response) -> {
+   Map<String, Object> model = new HashMap<String, Object>();
+   String name = request.queryParams("name");
+   Team newTeam = new Team(name);
+   model.put("template", "templates/team-success.vtl");
+   return new ModelAndView(model, layout);
+ }, new VelocityTemplateEngine());
+
+// a route to process new-hero form submission
         post("/heroes", (request, response) -> {
           Map<String, Object> model = new HashMap<String, Object>();
 
