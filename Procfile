@@ -1,1 +1,1 @@
-web: ./build/install/superhero.app/bin/superhero.app
+web: ./build/install/superhero/bin/superhero

@@ -79,7 +79,7 @@ get("/teams/:id", (request, response) -> {
  // Because we are now exclusively creating new Hero objects after selecting their corresponding Team this route will replace our previous /heroes/new route
 get("teams/:id/heroes/new", (request, response) -> {
   Map<String, Object> model = new HashMap<String, Object>();
-  Category category = Category.find(Integer.parseInt(request.params(":id")));
+  Team team = Team.find(Integer.parseInt(request.params(":id")));
   model.put("team", team);
   model.put("template", "templates/team-heroes-form.vtl");
   return new ModelAndView(model, layout);
